@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자 뽑기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body {
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            background-color: hsl(0, 0%, 10%);
+        }
+        #number-container {
+            width: 50dvw;
+            height: 300px;
+
+            position: fixed;
+            left: 50dvw;
+            top: 25dvh;
+            transform: translate(-50%, -50%);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            flex-direction: column;
+
+            border: 1px solid hsl(0, 0%, 100%);
+
+            overflow: hidden;
+        }
+        #range-container {
+            position: fixed;
+            left: 50dvw;
+            top: 70dvh;
+            transform: translate(-50%, -50%);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        input {
+            width: 100px;
+            height: 60px;
+
+            font-size: 1.5rem;
+            text-align: center;
+            color: hsl(0, 0%, 100%);
+
+            background-color: hsl(0, 0%, 10%);
+
+            border: 1px solid hsl(0, 0%, 100%);
+            border-radius: 5px;
+        }
+        #range_wave {
+            margin: 0 20px;
+
+            font-size: 2rem;
+            color: hsl(0, 0%, 100%);
+        }
+        button {
+            padding: 10px 20px;
+
+            position: fixed;
+            left: 50dvw;
+            top: 85dvh;
+            transform: translate(-50%, -50%);
+
+            font-size: 2rem;
+            color: hsl(0, 0%, 10%);
+            font-weight: bold;
+
+            background-color: hsl(0, 0%, 100%);
+
+            border: none;
+            border-radius: 5px;
+        }
+        .number {
+            padding: 0px 20px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border: 1px solid red;
+
+            color: hsl(0, 0%, 100%);
+            font-size: 5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="number-container">
+    </div>
+    <div id="range-container">
+        <input type="number" id="start" value="1">
+        <span id="range_wave">~</span>
+        <input type="number" id="end" value="10">
+    </div>
+    <button id="roll">굴리기</button>
+
+    <script>
+        const numberContainer = document.getElementById('number-container');
+        const start = document.getElementById('start');
+        const end = document.getElementById('end');
+        const roll = document.getElementById('roll');
+
+        function createNumber() {
+            numberContainer.innerHTML = '';
+            for (let i = Number(start.value); i <= Number(end.value); i++) {
+                const number = document.createElement('div');
+                number.classList.add('number');
+                number.innerText = i;
+                numberContainer.appendChild(number);
+            }
+        };
+
+        window.onload = () => {
+            createNumber();
+        };
+        start.onchange = () => {
+            createNumber();
+        };
+        end.onchange = () => {
+            createNumber();
+        };
+    </script>
+</body>
+</html>
