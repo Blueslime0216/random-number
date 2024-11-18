@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>숫자 뽑기</title>
+    <title>Rolling the Dice</title>
     <style>
         * {
             margin: 0;
@@ -18,122 +18,90 @@
             justify-content: center;
             align-items: center;
 
-            background-color: hsl(0, 0%, 10%);
+            background-color: #19222B;
         }
-        #number-container {
-            width: 50dvw;
-            height: 300px;
+        canvas {
+            width: min(100vw, 100vh);
+            height: min(100vw, 100vh);
 
+            image-rendering: pixelated;
+        }
+        #roll {
             position: fixed;
-            left: 50dvw;
-            top: 25dvh;
-            transform: translate(-50%, -50%);
+            bottom: 20px;
+            transform: translateX(-50%, -50%);
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 20dvw;
+            height: auto;
+            
+            image-rendering: pixelated;
 
-            flex-direction: column;
-
-            border: 1px solid hsl(0, 0%, 100%);
-
-            overflow: hidden;
+            cursor: pointer;
         }
-        #range-container {
-            position: fixed;
-            left: 50dvw;
-            top: 70dvh;
-            transform: translate(-50%, -50%);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        input {
-            width: 100px;
-            height: 60px;
-
-            font-size: 1.5rem;
-            text-align: center;
-            color: hsl(0, 0%, 100%);
-
-            background-color: hsl(0, 0%, 10%);
-
-            border: 1px solid hsl(0, 0%, 100%);
-            border-radius: 5px;
-        }
-        #range_wave {
-            margin: 0 20px;
-
-            font-size: 2rem;
-            color: hsl(0, 0%, 100%);
-        }
-        button {
-            padding: 10px 20px;
-
-            position: fixed;
-            left: 50dvw;
-            top: 85dvh;
-            transform: translate(-50%, -50%);
-
-            font-size: 2rem;
-            color: hsl(0, 0%, 10%);
-            font-weight: bold;
-
-            background-color: hsl(0, 0%, 100%);
-
-            border: none;
-            border-radius: 5px;
-        }
-        .number {
-            padding: 0px 20px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border: 1px solid red;
-
-            color: hsl(0, 0%, 100%);
-            font-size: 5rem;
+        #roll:hover {
+            scale: 1.1;
         }
     </style>
 </head>
 <body>
-    <div id="number-container">
-    </div>
-    <div id="range-container">
-        <input type="number" id="start" value="1">
-        <span id="range_wave">~</span>
-        <input type="number" id="end" value="10">
-    </div>
-    <button id="roll">굴리기</button>
+    <canvas id="animation" width="144" height="144"></canvas>
+    <canvas id="roll" width="37" height="17" onclick="rollDice();"></button>
+
 
     <script>
-        const numberContainer = document.getElementById('number-container');
-        const start = document.getElementById('start');
-        const end = document.getElementById('end');
+        const canvas = document.getElementById('animation');
+        const ctx = canvas.getContext('2d');
         const roll = document.getElementById('roll');
+        const roll_ctx = roll.getContext('2d');
 
-        function createNumber() {
-            numberContainer.innerHTML = '';
-            for (let i = Number(start.value); i <= Number(end.value); i++) {
-                const number = document.createElement('div');
-                number.classList.add('number');
-                number.innerText = i;
-                numberContainer.appendChild(number);
+        let lastDrawTime = 0;
+        let index = 0;
+        let animation = 5;
+
+        // roll 버튼 그리기
+        const img = new Image();
+        img.src = './res/roll.png';
+        img.onload = () => {
+            roll_ctx.drawImage(img, 0, 0);
+        }
+        
+        // 이미지들 미리 로딩해두기
+        const rollImages = Array.from({ length: 8 }, (_, i) => {
+            return Array.from({ length: 50 }, (_, j) => {
+                const img = new Image();
+                img.src = `./res/roll/${String(i).padStart(3, '0')}/${String(j + 1).padStart(4, '0')}.png`;
+                return img;
+            });
+        });
+
+        function drawImage(index) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(rollImages[animation][index], 0, 0);
+        }
+
+        function animate() {
+            const drawInterval = 1000 / 30;
+            let currentTime = performance.now();
+            let elapsedTime = currentTime - lastDrawTime;
+
+            if (elapsedTime > drawInterval) {
+                lastDrawTime = currentTime;
+                if (index >= 49) {
+                    return;
+                } else {
+                    index += 1;
+                }
+                drawImage(index);
             }
-        };
 
-        window.onload = () => {
-            createNumber();
-        };
-        start.onchange = () => {
-            createNumber();
-        };
-        end.onchange = () => {
-            createNumber();
-        };
+            requestAnimationFrame(animate);
+        }
+
+        function rollDice() {
+            index = 0;
+            animation = Math.floor(Math.random() * 7);
+            requestAnimationFrame(animate);
+        }
     </script>
 </body>
 </html>
