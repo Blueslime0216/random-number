@@ -10,6 +10,7 @@
             padding: 0;
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
             height: 100vh;
@@ -20,7 +21,11 @@
 
             background-color: #19222B;
         }
-        canvas {
+        #animation {
+            position: fixed;
+            bottom: calc(min(50vw, 50vh)*-0.2);
+            transform: translateX(-50%, -50%);
+
             width: min(100vw, 100vh);
             height: min(100vw, 100vh);
 
@@ -28,6 +33,13 @@
         }
         #roll {
             position: fixed;
+            bottom: 0px;
+            transform: translateX(-50%, -50%);
+
+            width: min(100vw, 100vh);
+            height: min(50vw, 50vh);
+
+            /* position: fixed;
             bottom: 20px;
             transform: translateX(-50%, -50%);
 
@@ -36,34 +48,33 @@
             
             image-rendering: pixelated;
 
-            cursor: pointer;
-        }
-        #roll:hover {
-            scale: 1.1;
+            cursor: pointer; */
         }
     </style>
 </head>
 <body>
     <canvas id="animation" width="144" height="144"></canvas>
-    <canvas id="roll" width="37" height="17" onclick="rollDice();"></button>
+    <div id="roll" onclick="rollDice();"></div>
+    <!-- <canvas id="roll" width="37" height="17" onclick="rollDice();"></canvas> -->
 
 
     <script>
         const canvas = document.getElementById('animation');
         const ctx = canvas.getContext('2d');
-        const roll = document.getElementById('roll');
-        const roll_ctx = roll.getContext('2d');
+        // const roll = document.getElementById('roll');
+        // const roll_ctx = roll.getContext('2d');
+        const roll = document.querySelector('#roll');
 
         let lastDrawTime = 0;
         let index = 0;
-        let animation = 5;
+        let animation = 0;
 
-        // roll 버튼 그리기
-        const img = new Image();
-        img.src = './res/roll.png';
-        img.onload = () => {
-            roll_ctx.drawImage(img, 0, 0);
-        }
+        // // roll 버튼 그리기
+        // const img = new Image();
+        // img.src = './res/roll.png';
+        // img.onload = () => {
+        //     roll_ctx.drawImage(img, 0, 0);
+        // }
         
         // 이미지들 미리 로딩해두기
         const rollImages = Array.from({ length: 8 }, (_, i) => {
@@ -73,7 +84,12 @@
                 return img;
             });
         });
+        // 사이트 접속시 바로 보여줄 처음 이미지 그리기
+        rollImages[0][0].onload = () => {
+            drawImage(index);
+        };
 
+        // animation의 index에 해당하는 이미지 그리기
         function drawImage(index) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(rollImages[animation][index], 0, 0);
@@ -97,8 +113,11 @@
             requestAnimationFrame(animate);
         }
 
+        // 주사위 굴리는 함수
         function rollDice() {
+            // 이미지 초기화
             index = 0;
+            // 애니메이션 종류 랜덤 선택
             animation = Math.floor(Math.random() * 7);
             requestAnimationFrame(animate);
         }
