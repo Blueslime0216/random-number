@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+body {
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #19222B;
+}
+@font-face {
+    font-family: 'GalmuriMono9';
+    src: url('./res/font/GalmuriMono9.woff2') format('woff2');
+}
+
+#title {
+    position: fixed;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50%, -50%);
+    
+    width: min(100vw, 100vh);
+    height: min(50vw, 50vh);
+
+    font-family: 'GalmuriMono9';
+
+    image-rendering: pixelated;
+
+    /* border: 1px solid #FFFFFF; */
+}
+#animation {
+    position: fixed;
+    bottom: calc(min(50vw, 50vh)*-0.2);
+    transform: translateX(-50%, -50%);
+
+    width: min(100vw, 100vh);
+    height: min(100vw, 100vh);
+
+    image-rendering: pixelated;
+
+    /* border: 1px solid green; */
+}
+#roll {
+    position: fixed;
+    bottom: 0px;
+    transform: translateX(-50%, -50%);
+
+    width: min(100vw, 100vh);
+    height: min(50vw, 50vh);
+
+    z-index: 100;
+
+    /* border: 1px solid greenyellow; */
+}
