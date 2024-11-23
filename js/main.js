@@ -27,12 +27,12 @@ let result = null;
 // 페이드 인/아웃 애니메이션 함수
 // ==================================================
 // 애니메이션 시작 함수
-function fadeInText_Start(t, d, speed) {
+function fadeInText_Start(t, d, speed, size) {
     text = t;
     opacity = -d;
     animationSpeed = speed;
 
-    title_ctx.font = '15pt "GalmuriMono9"';
+    title_ctx.font = `${size}pt "GalmuriMono9"`;
     title_ctx.fillStyle = '#7B3548';
     title_ctx.textAlign = 'start';
     title_ctx.textBaseline = 'middle';
@@ -85,9 +85,14 @@ function fadeOutText() {
                 const charPos = title_ctx.measureText(text.slice(0, i)).width;
                 const charOpacity = 1 - (opacity - (1/(text.length) * i));
                 title_ctx.fillStyle = `rgba(123, 53, 72, ${charOpacity})`;
-                const strong = 5;
-                const glitch_x = Math.floor(Math.random() * strong) - strong/2;
-                const glitch_y = Math.floor(Math.random() * strong) - strong/2;
+                const strong = 8;
+                let glitch_x = 0;
+                let glitch_y = 0;
+                if (Math.random() > 0.5) {
+                    glitch_x = Math.floor(Math.random() * strong) - strong/2;
+                    glitch_y = Math.floor(Math.random() * strong) - strong/2;
+                }
+                glitch_x = 0;
                 title_ctx.fillText(text[i], title.width/2 - textWidth/2 + charPos + glitch_x, title.height / 2 + glitch_y);
             }
             
@@ -121,7 +126,7 @@ function fadeOutText() {
 
 // "CLICK TO ROLL THE DICE" 텍스트 그리기
 document.fonts.load('15pt "GalmuriMono9"').then(() => {
-    fadeInText_Start('CLICK TO ROLL THE DICE', 1, 1);
+    fadeInText_Start('CLICK TO ROLL THE DICE', 1, 1, 15);
 });
 
 // 이미지들 미리 로딩해두기
@@ -184,5 +189,5 @@ function rollDice() {
 roll.addEventListener('click', rollDice);
 
 function showResult() {
-    fadeInText_Start(`You got ${result}!`, 0, 2);
+    fadeInText_Start(`You got ${result}!`, 0, 1.5, 30);
 }
