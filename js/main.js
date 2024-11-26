@@ -41,7 +41,6 @@ function fadeInText_Start(t, d, speed, size) {
 };
 // 페이드 인 함수
 function fadeInText() {
-    console.log(opacity);
     if (opacity >= 3) {
         opacity = 0;
         ableToRoll = true;
@@ -174,7 +173,6 @@ function rollDice() {
     if (!ableToRoll) {
         return;
     }
-    console.log('rollDice');
     ableToRoll = false;
     fadeOut = true;
     // 이미지 초기화
@@ -182,7 +180,9 @@ function rollDice() {
     // 랜덤 숫자 뽑기
     result = Math.floor(Math.random() * (max - min + 1)) + min;
     // 애니메이션 종류 랜덤 선택
-    animation = Math.floor(Math.random() * 7);
+    let imsi = Math.floor(Math.random() * 7);
+    console.log(animation === imsi);
+    (animation === imsi) ? (animation = (imsi + 1) % 8) : (animation = imsi);
     requestAnimationFrame(animate);
 }
 // 이벤트 리스너 등록
